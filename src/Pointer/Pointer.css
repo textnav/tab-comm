@@ -1,0 +1,7 @@
+svg {
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  mix-blend-mode: difference;
+  flex: 1;
+}
