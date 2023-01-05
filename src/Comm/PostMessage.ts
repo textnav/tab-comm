@@ -16,7 +16,7 @@ export const receive = (frames: IFrames) => (
   updateFn: (x: number, y: number) => void
 ) => {
   window.addEventListener("message", (message) => {
-    console.log('message', message)
+    // console.log('message', message)
     const data: Payload = message.data
 
     if (window.name === "") {

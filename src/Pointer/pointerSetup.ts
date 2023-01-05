@@ -1,5 +1,9 @@
 import gsap from "gsap";
 
+gsap.config({
+  nullTargetWarn: false,
+});
+
 const getRandom = (start = 0, end = 10) =>
   Math.floor(start + Math.random() * end);
 
@@ -35,12 +39,17 @@ export function handleMouseMove(x: number, y: number) {
 }
 
 export function setup() {
+  const ele = document.getElementById("container");
+  if (!ele) {
+    return
+  };
+  
   for (let p = 0; p <= config.length; p++)
     config.pts.push(config.mousePos.x + "," + config.mousePos.y + " ");
 
   for (let i = 0; i < config.lines; i++) {
     let p = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
-    document.getElementById("container")?.appendChild(p);
+    ele.appendChild(p);
     gsap.set(p, {
       attr: {
         id: "s" + i,
