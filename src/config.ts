@@ -19,6 +19,9 @@ export interface IFrames {
 
 export const Channel = new BroadcastChannel("my-channel"); // Create a broadcast channel
 
-export const TypeContext = createContext<ComType>("broadcastChannel");
-
-export const FramesContext = createContext<IFrames>({});
+export const FramesContext = createContext<{
+  frames?: IFrames;
+  updateFrames: (frame1: Window, frame2: Window) => void
+}>({
+  updateFrames: (frame1, frame2) => {}
+});
