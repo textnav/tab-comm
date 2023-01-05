@@ -1,25 +1,43 @@
-import { useCallback, useContext, useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import "./Pointer.css";
 import { handleMouseMove, setup } from "./pointerSetup";
+
 import * as channel from "../Comm/BroadcastChannel";
 import * as postMessage from "../Comm/PostMessage";
-import { FramesContext, TypeContext } from "../config";
+import * as localStorage from "../Comm/Localstorage";
 
-export function Pointer(): JSX.Element {
-  const type = useContext(TypeContext);
-  const frames = useContext(FramesContext);
+import { ComType } from "../config";
+
+export function Pointer({type}: {type: ComType}): JSX.Element {
 
   useEffect(() => {
     setup();
-    channel.receive(type, handleMouseMove);
-    postMessage.receive(type, frames)(handleMouseMove);
-  }, [type, frames]);
+  }, []);
+  
+  useEffect(() => {
+    switch (type) {
+      case "broadcastChannel": {
+        channel.receive(type, handleMouseMove);
+        break;
+      }
+      case "postMessage": {
+        postMessage.receive({})(handleMouseMove);
+        break;
+      }
+      case "localStorage": {
+        localStorage.receive(handleMouseMove);
+        break;
+      }
+      default:
+        break;
+    }
+  }, [type]);
 
   const onMouseMove = useCallback(
     (e: any) => {
       const { clientX, clientY } = e;
       handleMouseMove(clientX, clientY);
-      console.log(type);
+      // console.log('type', type, frames)
 
       switch (type) {
         case "broadcastChannel": {
@@ -28,6 +46,10 @@ export function Pointer(): JSX.Element {
         }
         case "postMessage": {
           postMessage.dispatch(clientX, clientY);
+          break;
+        }
+        case "localStorage": {
+          localStorage.dispatch(clientX, clientY);
           break;
         }
         default:

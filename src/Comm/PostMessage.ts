@@ -12,11 +12,12 @@ export const dispatch = (x: number, y: number) => {
   }
 };
 
-export const receive = (type: ComType, frames: IFrames) => (
+export const receive = (frames: IFrames) => (
   updateFn: (x: number, y: number) => void
 ) => {
-  window.addEventListener("message", ({ data }: { data: Payload }) => {
-    if (type !== "postMessage") return;
+  window.addEventListener("message", (message) => {
+    // console.log('message', message)
+    const data: Payload = message.data
 
     if (window.name === "") {
       // this is parent window
